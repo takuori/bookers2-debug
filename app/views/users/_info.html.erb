@@ -9,13 +9,21 @@
 	  <th><%= user.introduction %></th>
   </tr>
   <tr>
-    <th>フォロー数:<%= user.followings.count %></th>
-    <th>フォロワー数:<%= user.followers.count %></th>
+    <th>follows</th>
+    <th><%= link_to user.followings.count, user_followings_path(user) %></th>
+  </tr>
+  <tr>
+    <th>followers</th>
+    <th><%= link_to user.followers.count, user_followers_path(user) %></th>
   </tr>
 </table>
 
 <div class='row'>
-  <%= link_to edit_user_path(user), class: "btn btn-outline-secondary btn-block edit_user_#{user.id}" do %>
-    <i class="fas fa-user-cog"></i>
+  <% if current_user != user %>
+    <td><%= render "relationships/btn", user: user %></td>
+  <% else %>
+    <%= link_to edit_user_path(user), class: "btn btn-outline-secondary btn-block edit_user_#{user.id}" do %>
+      <i class="fas fa-user-cog"></i>
+    <% end %>
   <% end %>
 </div>
