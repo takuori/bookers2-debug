@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :followed
   has_many :user_rooms, dependent: :destroy
   has_many :chats, dependent: :destroy
+  has_many :view_counts, dependent: :destroy
 
 
   has_one_attached :profile_image
