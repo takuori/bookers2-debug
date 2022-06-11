@@ -1,0 +1,119 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>今日の投稿数</th>
+      <th>前日の投稿数</th>
+      <th>前日比</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @today_book.count %></td>
+      <td><%= @yesterday_book.count %></td>
+      <td>
+        <% if @yesterday_book.count == 0 %>
+         前日の投稿はありません
+        <% else %>
+         <% @the_day_before = @today_book.count / @yesterday_book.count.to_f %>
+         <%= (@the_day_before * 100).round %>%
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>今週の投稿数</th>
+      <th>前週の投稿数</th>
+      <th>前週比</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @this_week_book.count %></td>
+      <td><%= @last_week_book.count %></td>
+      <td>
+        <% if @last_week_book.count == 0 %>
+         前週の投稿はありません
+        <% else %>
+         <% @the_week_before = @this_week_book.count / @last_week_book.count.to_f %>
+         <%= (@the_week_before * 100).round %>%
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>6日前</th>
+      <th>5日前</th>
+      <th>4日前</th>
+      <th>3日前</th>
+      <th>2日前</th>
+      <th>1日前</th>
+      <th>今日</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @books.created_6day_ago.count %></td>
+      <td><%= @books.created_5day_ago.count %></td>
+      <td><%= @books.created_4day_ago.count %></td>
+      <td><%= @books.created_3day_ago.count %></td>
+      <td><%= @books.created_2day_ago.count %></td>
+      <td><%= @books.created_yesterday.count %></td>
+      <td><%= @books.created_today.count %></td>
+    </tr>
+  </tbody>
+</table>
+<canvas id="myChart"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  $(document).on('turbolinks:load',function() {
+    var ctx = document.getElementById('myChart');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['今日', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [
+                    <%= @books.created_6day_ago.count %>,、
+                    <%= @books.created_5day_ago.count %>,
+                    <%= @books.created_4day_ago.count %>,
+                    <%= @books.created_3day_ago.count %>,
+                    <%= @books.created_2day_ago.count %>,
+                    <%= @books.created_yesterday.count %>,
+                    <%= @books.created_today.count %>
+                  ],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+            },
+         }
+     });
+  });
+</script>
